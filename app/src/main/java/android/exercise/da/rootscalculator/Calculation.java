@@ -25,6 +25,10 @@ public class Calculation implements Comparable<Calculation> {
         this.status = status;
     }
 
+    public String getStatus() {
+        return this.status;
+    }
+
     public long getNumber() {
         return this.number;
     }
