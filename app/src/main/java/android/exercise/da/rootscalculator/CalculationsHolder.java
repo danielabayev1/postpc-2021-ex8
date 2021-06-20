@@ -16,11 +16,13 @@ public class CalculationsHolder {
     private final SharedPreferences sp;
     private Gson gson;
     private MutableLiveData<ArrayList<Calculation>> calculationsLiveDataMutable = new MutableLiveData<>();
+    private ManagerOfWorks managerOfWorks;
 
-    CalculationsHolder(SharedPreferences sp) {
+    CalculationsHolder(SharedPreferences sp, ManagerOfWorks managerOfWorks) {
         this.sp = sp;
         this.gson = new Gson();
         initializeFromSp();
+        this.managerOfWorks = managerOfWorks;
         this.calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
 
     }
@@ -28,8 +30,8 @@ public class CalculationsHolder {
     private void initializeFromSp() {
         Set<String> keys = this.sp.getAll().keySet();
         for (String key : keys) {
-            String todoItem = sp.getString(key, null);
-            Calculation calc = gson.fromJson(todoItem, Calculation.class);
+            String calcString = sp.getString(key, null);
+            Calculation calc = gson.fromJson(calcString, Calculation.class);
             calculationList.add(calc);
         }
         Collections.sort(this.calculationList);
@@ -43,8 +45,10 @@ public class CalculationsHolder {
         Calculation calc = new Calculation(number);
         this.calculationList.add(calc);
         Collections.sort(this.calculationList);
-        calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
         updateSpContent(calc);
+        this.managerOfWorks.runNewCalc(calc);
+        calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
+
     }
 
     public LiveData<ArrayList<Calculation>> getLiveData() {
@@ -61,6 +65,15 @@ public class CalculationsHolder {
         Collections.sort(this.calculationList);
         calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
         updateSpContent(calc);
+    }
+
+
+    public void deleteCalc(Calculation calc) {
+        this.calculationList.remove(calc);
+        calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(calc.getCalcId());
+        editor.apply();
     }
 
     private void updateSpContent(Calculation calc) {

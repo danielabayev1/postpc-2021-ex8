@@ -5,6 +5,7 @@ import java.util.UUID;
 public class Calculation implements Comparable<Calculation> {
     long number;
     long root1, root2;
+    long lastCounter;
     String status;
     String calcId;
 
@@ -14,6 +15,7 @@ public class Calculation implements Comparable<Calculation> {
         this.root1 = -1;
         this.root2 = -1;
         this.calcId = UUID.randomUUID().toString();
+        this.lastCounter = 2;
     }
 
     public void setRoots(long root1, long root2) {
@@ -35,6 +37,14 @@ public class Calculation implements Comparable<Calculation> {
 
     public String getCalcId() {
         return calcId;
+    }
+
+    public long getLastCounter() {
+        return lastCounter;
+    }
+
+    public void setLastCounter(long lastCounter) {
+        this.lastCounter = lastCounter;
     }
 
     @Override

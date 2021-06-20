@@ -39,4 +39,5 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.3.1'
+    implementation "androidx.work:work-runtime:2.5.0"
 }
