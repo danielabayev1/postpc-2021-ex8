@@ -47,6 +47,17 @@ public class Calculation implements Comparable<Calculation> {
         this.lastCounter = lastCounter;
     }
 
+    public String getDescription() {
+        if (status.equals("in-progress")){
+            return "Roots for " + number + ": in-progress" ;
+        }
+        if (root1 != -1 && root2 != -1) {
+            return "Roots for " + number + ": " + root1 + "x" + root2;
+        } else  {
+            return "Roots for " + number + ": number is prime";
+        }
+    }
+
     @Override
     public int compareTo(Calculation o) {
         if (this.status.equals("in-progress") && o.status.equals("in-progress") ||

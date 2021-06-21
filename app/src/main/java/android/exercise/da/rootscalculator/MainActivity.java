@@ -19,11 +19,15 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     CalculationsHolder calculationsHolder;
     EditText editText;
+    MainActivity activity;
+    OnItemClickListener onClickDeleteButton = null;
+    OnItemClickListener onClickCancelButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity = this;
 
         if (calculationsHolder == null) {
             calculationsHolder = RootsCalculatorApplication.getInstance().getCalculationsHolder();
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        editText.setText("91837839918353");
+
         //onRestore
         if (savedInstanceState != null) {
             this.calculationsHolder = RootsCalculatorApplication.getInstance().getCalculationsHolder();
@@ -46,12 +52,11 @@ public class MainActivity extends AppCompatActivity {
             this.editText.setText(savedInstanceState.getString("text"));
         }
 
-        this.calculationsHolder.getLiveData().observe(this, new Observer<ArrayList<Calculation>>() {
-            @Override
-            public void onChanged(ArrayList<Calculation> calculations) {
-                adapter.setCalculations(calculations);
-            }
-        });
+        // setting adapters buttons
+        onClickDeleteButton = calculation -> calculationsHolder.deleteCalc(calculation);
+        onClickCancelButton = calculation -> calculationsHolder.cancelCalc(calculation);
+        adapter.onClickCancelButton = onClickCancelButton;
+        adapter.onClickDeleteButton = onClickDeleteButton;
 
         editText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,19 +80,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("----clicked from Main1");
                 try {
-                    long userInputLong = Long.parseLong(editText.toString());
+                    long userInputLong = Long.parseLong(editText.getText().toString());
                     if (userInputLong >= 0) {
-//                        calculationsHolder.addNewCalculation(userInputLong);
+                        System.out.println("----clicked from Main2");
+                        calculationsHolder.addNewCalculation(userInputLong);
                     }
                 } catch (NumberFormatException ignored) {
+                    System.out.println("----clicked from Main3");
                 }
             }
         });
+
+        this.calculationsHolder.getLiveData().observe(this, new Observer<ArrayList<Calculation>>() {
+            @Override
+            public void onChanged(ArrayList<Calculation> calculations) {
+                adapter.setCalculations(calculations);
+            }
+        });
+
 
     }
 
@@ -99,3 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+/*todo i need to figure out how to observe in-progress tasks from previous app launch(it comes automatically)
+* */

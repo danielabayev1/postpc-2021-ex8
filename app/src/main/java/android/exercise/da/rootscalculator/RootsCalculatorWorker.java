@@ -32,22 +32,29 @@ public class RootsCalculatorWorker extends Worker {
             long number = calc.getNumber();
             if (start != -1 && number != -1) {
                 long until = (long) Math.sqrt(number);
+                long onePercent = until / 100;
+                int counter = 1;
                 long root1 = -1;
                 long root2 = -1;
                 for (; start < until; start++) {
                     if ((long) (number % start) == 0) {
                         root1 = start;
                         root2 = (long) (number / start);
-                        return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).build());
+                        return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
                     }
-                    if (start % 1_000_000 == 0) {
-                        SharedPreferences.Editor editor = sp.edit();
+                    if (start > counter * onePercent) {
+                        setProgressAsync(new Data.Builder().putInt("percent", counter).build());
+                        counter++;
+                    }
+                    if (start % 5_000_000 == 0) {
+                        System.out.println("----clicked from Worker " + start);
                         calc.setLastCounter(start);
-                        editor.putString(id, gson.toJson(calc));
-                        editor.apply();
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        editor.putString(id, gson.toJson(calc));
+//                        editor.apply();
                     }
                 }
-                return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).build());
+                return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
             }
         }
         return Result.failure();

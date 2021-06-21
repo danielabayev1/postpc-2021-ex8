@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.WindowAnimationFrameStats;
 
+import androidx.lifecycle.LifecycleOwner;
+
 public class RootsCalculatorApplication extends Application {
     private SharedPreferences sp;
     private static RootsCalculatorApplication instance;
@@ -17,6 +19,7 @@ public class RootsCalculatorApplication extends Application {
         super.onCreate();
         instance = this;
         this.sp = this.getSharedPreferences("roots_db", Context.MODE_PRIVATE);
+        System.out.println("----application");
         this.managerOfWorks = new ManagerOfWorks(this);
         this.calculationsHolder = new CalculationsHolder(this.sp, managerOfWorks);
     }

@@ -35,22 +35,17 @@ public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> 
             holder.deleteButton.setVisibility(View.VISIBLE);
             holder.cancelCalc.setVisibility(View.GONE);
         }
+        holder.textView.setText(calculations.get(position).getDescription());
 
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickDeleteButton != null) {
-                    onClickDeleteButton.onButtonClick(calculations.get(position));
-                }
+        holder.deleteButton.setOnClickListener(v -> {
+            if (onClickDeleteButton != null) {
+                onClickDeleteButton.onButtonClick(calculations.get(position));
             }
         });
 
-        holder.cancelCalc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickCancelButton != null) {
-                    onClickCancelButton.onButtonClick(calculations.get(position));
-                }
+        holder.cancelCalc.setOnClickListener(v -> {
+            if (onClickCancelButton != null) {
+                onClickCancelButton.onButtonClick(calculations.get(position));
             }
         });
 
