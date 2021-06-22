@@ -24,13 +24,12 @@ public class CalculationsHolder {
     private final SharedPreferences sp;
     private final Gson gson;
     private final MutableLiveData<ArrayList<Calculation>> calculationsLiveDataMutable = new MutableLiveData<>();
-    private final ManagerOfWorks managerOfWorks;
 
 
-    CalculationsHolder(SharedPreferences sp, ManagerOfWorks managerOfWorks) {
+
+    CalculationsHolder(SharedPreferences sp) {
         this.sp = sp;
         this.gson = new Gson();
-        this.managerOfWorks = managerOfWorks;
         initializeFromSp();
         System.out.println("----" + calculationList.size());
         this.calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
@@ -55,32 +54,25 @@ public class CalculationsHolder {
 
     public void addNewCalculation(long number) {
         Calculation calc = new Calculation(number);
+        UUID requestId = RootsCalculatorApplication.getInstance().getManagerOfWorks().runNewCalc(calc);
+        calc.setRequestId(requestId.toString());
         this.calculationList.add(calc);
         Collections.sort(this.calculationList);
         updateSpContent(calc);
-        UUID requestId = this.managerOfWorks.runNewCalc(calc);
         calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
-        managerOfWorks.getWorkManager().getWorkInfoByIdLiveData(requestId).observeForever(new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (workInfo.getState().isFinished()) {
-                    long root1 = workInfo.getOutputData().getLong("root1", -1);
-                    long root2 = workInfo.getOutputData().getLong("root2", -1);
-                    calc.setRoots(root1, root2);
-                    markCalcDone(calc);
-                }
-            }
-        });
     }
 
     public LiveData<ArrayList<Calculation>> getLiveData() {
         return this.calculationsLiveDataMutable;
     }
 
-    public void markCalcDone(Calculation calc) {
+    public void markCalcDone(String id, long root1, long root2) {
+        Calculation calc = null;
         for (int i = 0; i < this.calculationList.size(); i++) {
-            if (this.calculationList.get(i).getCalcId().equals(calc.getCalcId())) {
-                this.calculationList.get(i).setStatus("done");
+            if (this.calculationList.get(i).getCalcId().equals(id)) {
+                calc = this.calculationList.get(i);
+                calc.setRoots(root1, root2);
+                calc.setStatus("done");
                 break;
             }
         }
@@ -108,8 +100,8 @@ public class CalculationsHolder {
     }
 
     public void cancelCalc(Calculation calc) {
-        managerOfWorks.getWorkManager().cancelUniqueWork(calc.getCalcId());
-        System.out.println("----from cancel");
+        RootsCalculatorApplication.getInstance().getManagerOfWorks().cancelCalc(calc.getRequestId());
+        System.out.println("----from cancel id: "+calc.getCalcId());
         deleteCalc(calc);
     }
 

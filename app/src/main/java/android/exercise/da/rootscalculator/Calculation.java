@@ -8,6 +8,7 @@ public class Calculation implements Comparable<Calculation> {
     long lastCounter;
     String status;
     String calcId;
+    String requestId;
 
     public Calculation(long number) {
         this.number = number;
@@ -48,14 +49,22 @@ public class Calculation implements Comparable<Calculation> {
     }
 
     public String getDescription() {
-        if (status.equals("in-progress")){
-            return "Roots for " + number + ": in-progress" ;
-        }
+//        if (status.equals("in-progress")){
+//            return "Roots for " + number + ": in-progress" ;
+//        }
         if (root1 != -1 && root2 != -1) {
             return "Roots for " + number + ": " + root1 + "x" + root2;
         } else  {
             return "Roots for " + number + ": number is prime";
         }
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public String getRequestId() {
+        return requestId;
     }
 
     @Override
@@ -64,9 +73,9 @@ public class Calculation implements Comparable<Calculation> {
                 this.status.equals("done") && o.status.equals("done")) {
             return Double.compare(this.number, o.number);
         } else if (this.status.equals("in-progress") && o.status.equals("done")) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 }

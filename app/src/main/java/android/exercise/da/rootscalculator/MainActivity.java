@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.setCalculations(this.calculationsHolder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-
+        editText.setText("89967623946997");
         editText.setText("91837839918353");
+//        editText.setText("9181531581341931811");
 
         //onRestore
         if (savedInstanceState != null) {
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         onClickCancelButton = calculation -> calculationsHolder.cancelCalc(calculation);
         adapter.onClickCancelButton = onClickCancelButton;
         adapter.onClickDeleteButton = onClickDeleteButton;
+        adapter.managerOfWorks = RootsCalculatorApplication.getInstance().getManagerOfWorks();
 
         editText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -83,15 +85,14 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("----clicked from Main1");
                 try {
                     long userInputLong = Long.parseLong(editText.getText().toString());
                     if (userInputLong >= 0) {
-                        System.out.println("----clicked from Main2");
+                        System.out.println("----clicked from Main1");
                         calculationsHolder.addNewCalculation(userInputLong);
                     }
                 } catch (NumberFormatException ignored) {
-                    System.out.println("----clicked from Main3");
+                    System.out.println("----clicked from Main2");
                 }
             }
         });

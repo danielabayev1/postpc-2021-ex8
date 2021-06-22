@@ -46,12 +46,14 @@ public class RootsCalculatorWorker extends Worker {
                         setProgressAsync(new Data.Builder().putInt("percent", counter).build());
                         counter++;
                     }
-                    if (start % 5_000_000 == 0) {
-                        System.out.println("----clicked from Worker " + start);
+                    if (start % 50_000_000 == 0) {
+                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
+                    }
+                    if (start % 100_000_000 == 0) {
                         calc.setLastCounter(start);
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        editor.putString(id, gson.toJson(calc));
-//                        editor.apply();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString(id, gson.toJson(calc));
+                        editor.apply();
                     }
                 }
                 return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
