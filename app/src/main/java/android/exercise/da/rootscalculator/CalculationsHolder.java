@@ -82,6 +82,21 @@ public class CalculationsHolder {
         updateSpContent(calc);
     }
 
+    public void updateProgress(String id, long progress) {
+        Calculation calc = null;
+        for (int i = 0; i < this.calculationList.size(); i++) {
+            if (this.calculationList.get(i).getCalcId().equals(id)) {
+                calc = this.calculationList.get(i);
+                calc.setProgress(progress);
+                break;
+            }
+        }
+//        Collections.sort(this.calculationList);
+        calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
+        System.out.println("----updateProgress");
+//        updateSpContent(calc);
+    }
+
 
     public void deleteCalc(Calculation calc) {
         for (int i = 0; i < this.calculationList.size(); i++) {

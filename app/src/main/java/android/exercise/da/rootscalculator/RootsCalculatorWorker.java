@@ -37,17 +37,21 @@ public class RootsCalculatorWorker extends Worker {
                 long root1 = -1;
                 long root2 = -1;
                 for (; start < until; start++) {
+                    if (isStopped()) {
+                        return Result.failure();
+                    }
                     if ((long) (number % start) == 0) {
                         root1 = start;
                         root2 = (long) (number / start);
                         return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
                     }
-                    if (start > counter * onePercent) {
-                        setProgressAsync(new Data.Builder().putInt("percent", counter).build());
-                        counter++;
-                    }
-                    if (start % 50_000_000 == 0) {
-                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
+//                    if (start > counter * onePercent) {
+//                        setProgressAsync(new Data.Builder().putInt("percent", counter).build());
+//                        counter++;
+//                    }
+                    if (start % 5_000_000 == 0) {
+//                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
+                        setProgressAsync(new Data.Builder().putLong("progress", start).putString("id", id).build());
                     }
                     if (start % 100_000_000 == 0) {
                         calc.setLastCounter(start);

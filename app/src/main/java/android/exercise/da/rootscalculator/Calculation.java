@@ -1,11 +1,13 @@
 package android.exercise.da.rootscalculator;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Calculation implements Comparable<Calculation> {
     long number;
     long root1, root2;
     long lastCounter;
+    long progress;
     String status;
     String calcId;
     String requestId;
@@ -17,6 +19,7 @@ public class Calculation implements Comparable<Calculation> {
         this.root2 = -1;
         this.calcId = UUID.randomUUID().toString();
         this.lastCounter = 2;
+        this.progress = 2;
     }
 
     public void setRoots(long root1, long root2) {
@@ -48,13 +51,15 @@ public class Calculation implements Comparable<Calculation> {
         this.lastCounter = lastCounter;
     }
 
-    public String getDescription() {
-//        if (status.equals("in-progress")){
-//            return "Roots for " + number + ": in-progress" ;
-//        }
+    public String getFinalDescription() {
+        if (status.equals("in-progress")) {
+            float val = BigDecimal.valueOf(((float)progress / Math.sqrt(number)) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+//            return "Roots for " + number + ": " + (progress / number) * 100 + "%...";
+            return  val+ "%...";
+        }
         if (root1 != -1 && root2 != -1) {
             return "Roots for " + number + ": " + root1 + "x" + root2;
-        } else  {
+        } else {
             return "Roots for " + number + ": number is prime";
         }
     }
@@ -65,6 +70,14 @@ public class Calculation implements Comparable<Calculation> {
 
     public String getRequestId() {
         return requestId;
+    }
+
+    public long getProgress() {
+        return progress;
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
     }
 
     @Override

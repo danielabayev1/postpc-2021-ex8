@@ -1,28 +1,23 @@
 package android.exercise.da.rootscalculator;
 
-import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
-import androidx.work.WorkInfo;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> {
     ArrayList<Calculation> calculations = new ArrayList<>();
-    LiveData<WorkInfo> liveData;
+//    LiveData<WorkInfo> liveData = null;
     OnItemClickListener onClickDeleteButton = null;
     OnItemClickListener onClickCancelButton = null;
-    ManagerOfWorks managerOfWorks;
+//    Observer<WorkInfo> observer = null;
+//    ManagerOfWorks managerOfWorks = null;
+    int i=0;
 
 
     @NonNull
@@ -35,33 +30,48 @@ public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CalculationHolder holder, int position) {
+//        System.out.println("**** created: "+i+" pos:"+position);
         Calculation calc = this.calculations.get(position);
-        System.out.println("----"+calc.getCalcId());
-        if(managerOfWorks!=null) {
-            liveData = managerOfWorks.getWorkManager().getWorkInfoByIdLiveData(UUID.fromString(calc.getRequestId()));
-            holder.textView.setText("a");
-            liveData.observeForever(new Observer<WorkInfo>() {
-                @Override
-                public void onChanged(WorkInfo workInfo) {
-                    Data progress = workInfo.getProgress();
-                    int percent = progress.getInt("percent", -1);
-                    if (percent != -1) {
-//                    String msg = "calculating roots for "+calc.getNumber()+": "+percent+"%...";
-                        String msg = percent + "%...";
-                        holder.textView.setText(msg);
-                    }
-                }
-            });
-        }
+//        String s = calc.getNumber() + " pos " + position;
+//        holder.textView.setText(s);
+//        if (managerOfWorks != null) {
+//            if (liveData != null) {
+//                if (observer != null) {
+//                    System.out.println("++++ del pos: "+position+" obs:" + observer +" ld:"+liveData);
+//                    liveData.removeObserver(observer);
+//                    observer = null;
+//                    liveData=null;
+//                }
+//            }
+//        }
 
         if (calc.getStatus().equals("in-progress")) {
             holder.deleteButton.setVisibility(View.GONE);
             holder.cancelCalc.setVisibility(View.VISIBLE);
+//            liveData = managerOfWorks.getWorkManager().getWorkInfoByIdLiveData(UUID.fromString(calc.getRequestId()));
+////            System.out.println("++++calcId: " + calc.getCalcId() + " pos:" + position);
+//            observer = new Observer<WorkInfo>() {
+//                @Override
+//                public void onChanged(WorkInfo workInfo) {
+////                    System.out.println("----calcId: "+calc.getCalcId()+" pos:"+position);
+//                    Data progress = workInfo.getProgress();
+//                    int percent = progress.getInt("percent", -1);
+//                    if (percent != -1) {
+////                    String msg = "calculating roots for "+calc.getNumber()+": "+percent+"%...";
+//                        String msg = percent + "%...";
+//                        holder.textView.setText(msg);
+//                    }
+//                }
+//            };
+//            System.out.println("++++ create pos: "+position+" obs:" + observer +" ld:"+liveData);
+//            liveData.observeForever(observer);
         } else {
             holder.deleteButton.setVisibility(View.VISIBLE);
             holder.cancelCalc.setVisibility(View.GONE);
-            holder.textView.setText(calculations.get(position).getDescription());
+//            liveData=null;
+//            observer=null;
         }
+        holder.textView.setText(calculations.get(position).getFinalDescription());
 
 
         holder.deleteButton.setOnClickListener(v -> {

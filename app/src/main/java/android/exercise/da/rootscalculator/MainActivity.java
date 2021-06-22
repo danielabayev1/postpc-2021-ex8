@@ -42,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.setCalculations(this.calculationsHolder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        editText.setText("89967623946997");
-        editText.setText("91837839918353");
-//        editText.setText("9181531581341931811");
+//        editText.setText("89967623946997");
+//        editText.setText("91837839918353");
+        editText.setText("9181531581341931811");
+        editText.setText("6165678739293946997");
 
         //onRestore
         if (savedInstanceState != null) {
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         onClickCancelButton = calculation -> calculationsHolder.cancelCalc(calculation);
         adapter.onClickCancelButton = onClickCancelButton;
         adapter.onClickDeleteButton = onClickDeleteButton;
-        adapter.managerOfWorks = RootsCalculatorApplication.getInstance().getManagerOfWorks();
+//        adapter.managerOfWorks = RootsCalculatorApplication.getInstance().getManagerOfWorks();
 
         editText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         this.calculationsHolder.getLiveData().observe(this, new Observer<ArrayList<Calculation>>() {
             @Override
             public void onChanged(ArrayList<Calculation> calculations) {
+                System.out.println("----changed");
                 adapter.setCalculations(calculations);
             }
         });

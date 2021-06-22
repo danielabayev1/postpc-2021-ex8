@@ -51,6 +51,14 @@ public class ManagerOfWorks {
                             }
                         }
                     }
+                    if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                        Data progress1 = workInfo.getProgress();
+                        long progress = progress1.getLong("progress", -1);
+                        String id = progress1.getString("id");
+                        if (progress != -1) {
+                            calculationsHolder.updateProgress(id, progress);
+                        }
+                    }
                 }
             }
         });
@@ -81,7 +89,7 @@ public class ManagerOfWorks {
     }
 
     public void cancelCalc(String id) {
-        System.out.println("----id from cancelCalc: "+UUID.fromString(id));
+        System.out.println("----id from cancelCalc: " + UUID.fromString(id));
         workManager.cancelWorkById(UUID.fromString(id));
         System.out.println("----from cancel managerofWorks");
     }
