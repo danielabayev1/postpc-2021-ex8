@@ -26,7 +26,7 @@ public class RootsCalculatorApplication extends Application {
     }
 
     public ManagerOfWorks getManagerOfWorks() {
-        return managerOfWorks;
+        return this.managerOfWorks;
     }
 
     public CalculationsHolder getCalculationsHolder() {

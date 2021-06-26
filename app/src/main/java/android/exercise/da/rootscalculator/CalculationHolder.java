@@ -2,6 +2,7 @@ package android.exercise.da.rootscalculator;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,11 +14,13 @@ public class CalculationHolder extends RecyclerView.ViewHolder {
     TextView textView;
     Button deleteButton;
     FloatingActionButton cancelCalc;
+    ProgressBar progressBar;
 
     public CalculationHolder(@NonNull View itemView) {
         super(itemView);
         textView = itemView.findViewById(R.id.descriptionText);
         deleteButton = itemView.findViewById(R.id.buttonDeleteItem);
         cancelCalc = itemView.findViewById(R.id.buttonCancelCalculation);
+        progressBar = itemView.findViewById(R.id.determinateBar);
     }
 }

@@ -20,6 +20,7 @@ public class RootsCalculatorWorker extends Worker {
     @Override
     public Result doWork() {
         // load from sp the right id for the worker calculation
+        System.out.println("####started worker");
         SharedPreferences sp = getApplicationContext().getSharedPreferences("roots_db", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String id = getInputData().getString("id");
@@ -30,38 +31,31 @@ public class RootsCalculatorWorker extends Worker {
             Calculation calc = gson.fromJson(calculationId, Calculation.class);
             long start = calc.getLastCounter();
             long number = calc.getNumber();
-            if (start != -1 && number != -1) {
-                long until = (long) Math.sqrt(number);
-                long onePercent = until / 100;
-                int counter = 1;
-                long root1 = -1;
-                long root2 = -1;
-                for (; start < until; start++) {
-                    if (isStopped()) {
-                        return Result.failure();
-                    }
-                    if ((long) (number % start) == 0) {
-                        root1 = start;
-                        root2 = (long) (number / start);
-                        return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
-                    }
-//                    if (start > counter * onePercent) {
-//                        setProgressAsync(new Data.Builder().putInt("percent", counter).build());
-//                        counter++;
-//                    }
-                    if (start % 5_000_000 == 0) {
-//                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
-                        setProgressAsync(new Data.Builder().putLong("progress", start).putString("id", id).build());
-                    }
-                    if (start % 100_000_000 == 0) {
-                        calc.setLastCounter(start);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString(id, gson.toJson(calc));
-                        editor.apply();
-                    }
+            long until = (long) Math.sqrt(number);
+            long root1 = -1;
+            long root2 = -1;
+            for (; start <= until; start++) {
+                if (isStopped()) {
+                    return Result.failure();
                 }
-                return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
+                if ((long) (number % start) == 0) {
+                    root1 = start;
+                    root2 = (long) (number / start);
+                    return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
+                }
+
+                if (start % 3_000_000 == 0) {
+                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
+                    setProgressAsync(new Data.Builder().putLong("progress", start).putString("id", id).build());
+                }
+                if (start % 100_000_000 == 0) {
+                    calc.setLastCounter(start);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(id, gson.toJson(calc));
+                    editor.apply();
+                }
             }
+            return Result.success(new Data.Builder().putLong("root1", root1).putLong("root2", root2).putString("id", id).build());
         }
         return Result.failure();
     }

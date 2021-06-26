@@ -12,12 +12,8 @@ import java.util.ArrayList;
 
 public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> {
     ArrayList<Calculation> calculations = new ArrayList<>();
-//    LiveData<WorkInfo> liveData = null;
     OnItemClickListener onClickDeleteButton = null;
     OnItemClickListener onClickCancelButton = null;
-//    Observer<WorkInfo> observer = null;
-//    ManagerOfWorks managerOfWorks = null;
-    int i=0;
 
 
     @NonNull
@@ -30,48 +26,23 @@ public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CalculationHolder holder, int position) {
-//        System.out.println("**** created: "+i+" pos:"+position);
-        Calculation calc = this.calculations.get(position);
-//        String s = calc.getNumber() + " pos " + position;
-//        holder.textView.setText(s);
-//        if (managerOfWorks != null) {
-//            if (liveData != null) {
-//                if (observer != null) {
-//                    System.out.println("++++ del pos: "+position+" obs:" + observer +" ld:"+liveData);
-//                    liveData.removeObserver(observer);
-//                    observer = null;
-//                    liveData=null;
-//                }
-//            }
-//        }
 
+        Calculation calc = this.calculations.get(position);
+        holder.progressBar.setProgress(0);
         if (calc.getStatus().equals("in-progress")) {
             holder.deleteButton.setVisibility(View.GONE);
             holder.cancelCalc.setVisibility(View.VISIBLE);
-//            liveData = managerOfWorks.getWorkManager().getWorkInfoByIdLiveData(UUID.fromString(calc.getRequestId()));
-////            System.out.println("++++calcId: " + calc.getCalcId() + " pos:" + position);
-//            observer = new Observer<WorkInfo>() {
-//                @Override
-//                public void onChanged(WorkInfo workInfo) {
-////                    System.out.println("----calcId: "+calc.getCalcId()+" pos:"+position);
-//                    Data progress = workInfo.getProgress();
-//                    int percent = progress.getInt("percent", -1);
-//                    if (percent != -1) {
-////                    String msg = "calculating roots for "+calc.getNumber()+": "+percent+"%...";
-//                        String msg = percent + "%...";
-//                        holder.textView.setText(msg);
-//                    }
-//                }
-//            };
-//            System.out.println("++++ create pos: "+position+" obs:" + observer +" ld:"+liveData);
-//            liveData.observeForever(observer);
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.progressBar.setProgress(calc.getProgressForBar());
         } else {
             holder.deleteButton.setVisibility(View.VISIBLE);
             holder.cancelCalc.setVisibility(View.GONE);
-//            liveData=null;
-//            observer=null;
+            holder.progressBar.setVisibility(View.GONE);
+//            holder.progressBar.setProgress(0);
+
         }
         holder.textView.setText(calculations.get(position).getFinalDescription());
+
 
 
         holder.deleteButton.setOnClickListener(v -> {

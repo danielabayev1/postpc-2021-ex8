@@ -39,7 +39,7 @@ public class ManagerOfWorks {
             public void onChanged(List<WorkInfo> workInfos) {
                 for (WorkInfo workInfo : workInfos) {
 //                    System.out.println("---- work info: "+workInfo);
-                    if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                    if (workInfo.getState() == WorkInfo.State.SUCCEEDED ) {
                         String id = workInfo.getOutputData().getString("id");
                         long root1 = workInfo.getOutputData().getLong("root1", -1);
                         long root2 = workInfo.getOutputData().getLong("root2", -1);
@@ -52,9 +52,9 @@ public class ManagerOfWorks {
                         }
                     }
                     if (workInfo.getState() == WorkInfo.State.RUNNING) {
-                        Data progress1 = workInfo.getProgress();
-                        long progress = progress1.getLong("progress", -1);
-                        String id = progress1.getString("id");
+                        Data workProgress = workInfo.getProgress();
+                        long progress = workProgress.getLong("progress", -1);
+                        String id = workProgress.getString("id");
                         if (progress != -1) {
                             calculationsHolder.updateProgress(id, progress);
                         }
@@ -88,9 +88,9 @@ public class ManagerOfWorks {
         return request.getId();
     }
 
-    public void cancelCalc(String id) {
-        System.out.println("----id from cancelCalc: " + UUID.fromString(id));
-        workManager.cancelWorkById(UUID.fromString(id));
+    public void cancelCalc(String requestId) {
+        System.out.println("----id from cancelCalc: " + UUID.fromString(requestId));
+        workManager.cancelWorkById(UUID.fromString(requestId));
         System.out.println("----from cancel managerofWorks");
     }
 

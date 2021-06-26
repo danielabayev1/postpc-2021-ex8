@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.setCalculations(this.calculationsHolder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-//        editText.setText("89967623946997");
+        editText.setText("89967623946997");
 //        editText.setText("91837839918353");
-        editText.setText("9181531581341931811");
-        editText.setText("6165678739293946997");
+//        editText.setText("9181531581341931811");
+//        editText.setText("6165678739293946997");
 
         //onRestore
         if (savedInstanceState != null) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 String newText = editText.getText().toString();
                 try {
                     long userInputLong = Long.parseLong(newText);
-                    if (userInputLong >= 0) {
+                    if (userInputLong > 0) {
                         button.setEnabled(true);
                     }
 
@@ -83,25 +83,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    long userInputLong = Long.parseLong(editText.getText().toString());
-                    if (userInputLong >= 0) {
-                        System.out.println("----clicked from Main1");
-                        calculationsHolder.addNewCalculation(userInputLong);
-                    }
-                } catch (NumberFormatException ignored) {
-                    System.out.println("----clicked from Main2");
+        button.setOnClickListener(v -> {
+            try {
+                long userInputLong = Long.parseLong(editText.getText().toString());
+                if (userInputLong >= 0) {
+//                    System.out.println("----clicked from Main1");
+                    calculationsHolder.addNewCalculation(userInputLong);
                 }
+            } catch (NumberFormatException ignored) {
             }
         });
 
         this.calculationsHolder.getLiveData().observe(this, new Observer<ArrayList<Calculation>>() {
             @Override
             public void onChanged(ArrayList<Calculation> calculations) {
-                System.out.println("----changed");
+//                System.out.println("----changed");
                 adapter.setCalculations(calculations);
             }
         });

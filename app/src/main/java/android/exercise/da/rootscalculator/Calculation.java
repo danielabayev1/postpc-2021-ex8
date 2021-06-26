@@ -19,7 +19,7 @@ public class Calculation implements Comparable<Calculation> {
         this.root2 = -1;
         this.calcId = UUID.randomUUID().toString();
         this.lastCounter = 2;
-        this.progress = 2;
+        this.progress = 0;
     }
 
     public void setRoots(long root1, long root2) {
@@ -53,14 +53,12 @@ public class Calculation implements Comparable<Calculation> {
 
     public String getFinalDescription() {
         if (status.equals("in-progress")) {
-            float val = BigDecimal.valueOf(((float)progress / Math.sqrt(number)) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-//            return "Roots for " + number + ": " + (progress / number) * 100 + "%...";
-            return  val+ "%...";
+            return "calculating roots for: " + number;
         }
         if (root1 != -1 && root2 != -1) {
             return "Roots for " + number + ": " + root1 + "x" + root2;
         } else {
-            return "Roots for " + number + ": number is prime";
+            return "Roots for " + number + ": \nnumber is prime";
         }
     }
 
@@ -72,8 +70,8 @@ public class Calculation implements Comparable<Calculation> {
         return requestId;
     }
 
-    public long getProgress() {
-        return progress;
+    public int getProgressForBar() {
+        return  (int)BigDecimal.valueOf(((float) progress / Math.sqrt(number)) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     public void setProgress(long progress) {

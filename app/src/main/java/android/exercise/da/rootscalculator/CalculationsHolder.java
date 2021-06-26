@@ -26,7 +26,6 @@ public class CalculationsHolder {
     private final MutableLiveData<ArrayList<Calculation>> calculationsLiveDataMutable = new MutableLiveData<>();
 
 
-
     CalculationsHolder(SharedPreferences sp) {
         this.sp = sp;
         this.gson = new Gson();
@@ -91,10 +90,7 @@ public class CalculationsHolder {
                 break;
             }
         }
-//        Collections.sort(this.calculationList);
         calculationsLiveDataMutable.setValue(new ArrayList<>(this.calculationList));
-        System.out.println("----updateProgress");
-//        updateSpContent(calc);
     }
 
 
@@ -102,7 +98,7 @@ public class CalculationsHolder {
         for (int i = 0; i < this.calculationList.size(); i++) {
             if (this.calculationList.get(i).getCalcId().equals(calc.getCalcId())) {
                 this.calculationList.remove(i);
-                System.out.println("----from delete");
+//                System.out.println("----from delete");
                 break;
             }
         }
@@ -116,7 +112,7 @@ public class CalculationsHolder {
 
     public void cancelCalc(Calculation calc) {
         RootsCalculatorApplication.getInstance().getManagerOfWorks().cancelCalc(calc.getRequestId());
-        System.out.println("----from cancel id: "+calc.getCalcId());
+        System.out.println("----from cancel id: " + calc.getCalcId());
         deleteCalc(calc);
     }
 
