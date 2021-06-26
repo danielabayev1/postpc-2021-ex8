@@ -16,11 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
+
 
     buildTypes {
         release {
@@ -34,7 +30,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -51,7 +51,7 @@ dependencies {
     implementation "androidx.work:work-runtime:2.5.0"
 
     //robolectric and mockito
-    testImplementation 'org.robolectric:robolectric:4.5.1'
+    testImplementation 'org.robolectric:robolectric:4.4'
     testImplementation 'org.mockito:mockito-core:3.2.0'
     testImplementation 'androidx.test:core:1.0.0'
 }
