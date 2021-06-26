@@ -28,6 +28,8 @@ public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> 
     public void onBindViewHolder(@NonNull CalculationHolder holder, int position) {
 
         Calculation calc = this.calculations.get(position);
+
+        /*setting views according to calculation state*/
         holder.progressBar.setProgress(0);
         if (calc.getStatus().equals("in-progress")) {
             holder.deleteButton.setVisibility(View.GONE);
@@ -38,13 +40,11 @@ public class CalculationAdapter extends RecyclerView.Adapter<CalculationHolder> 
             holder.deleteButton.setVisibility(View.VISIBLE);
             holder.cancelCalc.setVisibility(View.GONE);
             holder.progressBar.setVisibility(View.GONE);
-//            holder.progressBar.setProgress(0);
 
         }
         holder.textView.setText(calculations.get(position).getFinalDescription());
 
-
-
+        /*set button listeners*/
         holder.deleteButton.setOnClickListener(v -> {
             if (onClickDeleteButton != null) {
                 onClickDeleteButton.onButtonClick(calculations.get(position));

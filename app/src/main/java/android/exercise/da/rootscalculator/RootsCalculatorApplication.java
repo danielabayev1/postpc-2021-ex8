@@ -19,7 +19,7 @@ public class RootsCalculatorApplication extends Application {
         super.onCreate();
         instance = this;
         this.sp = this.getSharedPreferences("roots_db", Context.MODE_PRIVATE);
-        System.out.println("----application");
+//        System.out.println("----application");
         this.calculationsHolder = new CalculationsHolder(this.sp);
         this.managerOfWorks = new ManagerOfWorks(this,this.sp);
 

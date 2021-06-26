@@ -30,9 +30,7 @@ public class CalculationsHolder {
         this.sp = sp;
         this.gson = new Gson();
         initializeFromSp();
-        System.out.println("----" + calculationList.size());
-        this.calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
-
+//        System.out.println("----" + calculationList.size());
     }
 
     private void initializeFromSp() {
@@ -45,6 +43,7 @@ public class CalculationsHolder {
             }
         }
         Collections.sort(this.calculationList);
+        this.calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
     }
 
     public ArrayList<Calculation> getCurrentItems() {
@@ -102,12 +101,11 @@ public class CalculationsHolder {
                 break;
             }
         }
-        System.out.println("----" + calculationList.size());
+//        System.out.println("----" + calculationList.size());
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(calc.getCalcId());
         editor.apply();
         calculationsLiveDataMutable.setValue(new ArrayList<>(calculationList));
-
     }
 
     public void cancelCalc(Calculation calc) {
@@ -117,9 +115,11 @@ public class CalculationsHolder {
     }
 
     private void updateSpContent(Calculation calc) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(calc.getCalcId(), gson.toJson(calc));
-        editor.apply();
+        if (calc != null) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(calc.getCalcId(), gson.toJson(calc));
+            editor.apply();
+        }
     }
 
 }

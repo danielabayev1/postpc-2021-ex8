@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    CalculationsHolder calculationsHolder;
+    public CalculationsHolder calculationsHolder;
     EditText editText;
     MainActivity activity;
     OnItemClickListener onClickDeleteButton = null;
@@ -39,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton button = findViewById(R.id.buttonCreateNewCalculation);
         this.editText = findViewById(R.id.editTextInsertTask);
         RecyclerView rv = findViewById(R.id.recyclerRootsCalculationList);
+        //set adapter
         adapter.setCalculations(this.calculationsHolder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        editText.setText("89967623946997");
+//        editText.setText("89967623946997");
 //        editText.setText("91837839918353");
 //        editText.setText("9181531581341931811");
 //        editText.setText("6165678739293946997");
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 long userInputLong = Long.parseLong(editText.getText().toString());
                 if (userInputLong >= 0) {
-//                    System.out.println("----clicked from Main1");
+                    System.out.println("----clicked from Main1");
                     calculationsHolder.addNewCalculation(userInputLong);
                 }
             } catch (NumberFormatException ignored) {

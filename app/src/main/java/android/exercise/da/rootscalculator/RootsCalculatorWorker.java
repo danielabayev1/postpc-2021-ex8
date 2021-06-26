@@ -45,7 +45,7 @@ public class RootsCalculatorWorker extends Worker {
                 }
 
                 if (start % 3_000_000 == 0) {
-                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
+//                        System.out.println("----clicked from Worker " + start + " reqid: " + getId());
                     setProgressAsync(new Data.Builder().putLong("progress", start).putString("id", id).build());
                 }
                 if (start % 100_000_000 == 0) {

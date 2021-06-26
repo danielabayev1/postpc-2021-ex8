@@ -68,17 +68,6 @@ public class ManagerOfWorks {
         return workManager;
     }
 
-//    private void initializeFromHolder() {
-//        for (Calculation calc : this.calculationsHolder.getCurrentItems()) {
-//            // todo : done automatically
-//            if (calc.getStatus().equals("in-progress")) {
-//                OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(RootsCalculatorWorker.class)
-//                        .addTag("working").setInputData(new Data.Builder()
-//                                .putString("id", calc.getCalcId()).build()).build();
-//                workManager.enqueueUniqueWork(calc.getCalcId(), ExistingWorkPolicy.KEEP, request);
-//            }
-//        }
-//    }
 
     public UUID runNewCalc(Calculation calc) {
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(RootsCalculatorWorker.class)
@@ -89,9 +78,9 @@ public class ManagerOfWorks {
     }
 
     public void cancelCalc(String requestId) {
-        System.out.println("----id from cancelCalc: " + UUID.fromString(requestId));
+//        System.out.println("----id from cancelCalc: " + UUID.fromString(requestId));
         workManager.cancelWorkById(UUID.fromString(requestId));
-        System.out.println("----from cancel managerofWorks");
+//        System.out.println("----from cancel managerofWorks");
     }
 
 }
